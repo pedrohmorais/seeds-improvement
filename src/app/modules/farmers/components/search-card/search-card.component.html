@@ -1,1 +1,42 @@
-<p>search-card works!</p>
+<div *ngIf="hasFarmers()">
+  <form [formGroup]="farmerForm">
+    <mat-form-field>
+      <mat-label>Name</mat-label>
+      <input type="text" formControlName="name" autocomplete="off" matInput placeholder="Your name">
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Document number</mat-label>
+      <input type="text" formControlName="documentNumber" autocomplete="off" matInput placeholder="Doc #">
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Document type</mat-label>
+      <input type="text" formControlName="documentType" autocomplete="off" matInput placeholder="Doc type">
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Full address</mat-label>
+      <input type="text" formControlName="addressAddress" autocomplete="off" matInput placeholder="Your full address">
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Country</mat-label>
+      <input type="text" formControlName="addressCountry" autocomplete="off" matInput placeholder="Your country">
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>State</mat-label>
+      <input type="text" formControlName="addressState" autocomplete="off" matInput placeholder="Your state">
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Street</mat-label>
+      <input type="text" formControlName="addressStreet" autocomplete="off" matInput placeholder="Street name">
+    </mat-form-field>
+  </form>
+</div>
+<div *ngIf="!hasFarmers()">
+  No results for this search!
+</div>
+<button
+  (click)="onPartnerSelected()"
+  mat-raised-button
+  color="primary"
+>
+  Edit this farmer
+</button>

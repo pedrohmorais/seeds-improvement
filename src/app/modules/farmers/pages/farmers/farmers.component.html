@@ -1,1 +1,13 @@
-<farmer-search-card></farmer-search-card>
+<form [formGroup]="searchForm">
+  <mat-form-field class="example-full-width">
+    <mat-label>Search by name or document:</mat-label>
+    <input type="text" formControlName="search" autocomplete="off" matInput placeholder="Name or document">
+    <md-icon matSuffix class="material-icons">&#xE8B6;</md-icon>
+  </mat-form-field>
+</form>
+<farmer-search-card
+  (partnerSelectedEvent)="onSelectFarmer($event)"
+  [farmerSearchAbstractProvider]="farmerSearch"
+  [searchParams]="searchParams"
+>
+</farmer-search-card>

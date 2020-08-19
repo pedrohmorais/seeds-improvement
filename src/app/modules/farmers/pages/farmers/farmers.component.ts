@@ -1,4 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter } from '@angular/core';
+import { FormGroup, FormBuilder } from '@angular/forms';
+import { debounceTime } from 'rxjs/operators';
+import { FarmersService } from 'src/app/core/services/farmers.service';
+import { Farmer } from 'src/app/core/model/Farmer';
+import { FarmerSearchAbstractProvider } from 'src/app/core/providers/farmer-search.abstract';
+import { SearchParams } from 'src/app/core/model/Farmer/search-params';
 
 @Component({
   selector: 'farmer-farmers',
@@ -7,9 +13,37 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FarmersComponent implements OnInit {
 
-  constructor() { }
+  farmer: Farmer;
+  farmerSearch: FarmerSearchAbstractProvider;
+  farmerSelected = false;
+  searchForm: FormGroup;
+  searchParams: SearchParams;
+
+  constructor(
+    private farmersService: FarmersService,
+    private formBuilder: FormBuilder,
+  ) { }
 
   ngOnInit(): void {
+    this.farmerSearch = this.farmersService;
+    this.searchForm = this.formBuilder.group({
+      search: this.formBuilder.control(''),
+    });
+    this.searchForm.controls.search.valueChanges.pipe(
+      debounceTime(500),
+    ).subscribe(change => {
+      this.setSearchParams(change);
+    });
   }
 
+  setSearchParams(search: string): void {
+    this.searchParams = {
+      id: search,
+      name: search,
+    };
+  }
+
+  onSelectFarmer(ev: boolean): void {
+    this.farmerSelected = ev;
+  }
 }
