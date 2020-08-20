@@ -16,9 +16,9 @@ To start server run:
 
 To restart docker run `./scripts/restart-docker.sh` file or it content.
 
-## Docker restart
+## Clear Docker Compose
 
-To restart docker run `./scripts/restart-docker.sh` file or it content.
+To your docker compose images run `./scripts/clear-docker-compose.sh ` file or it content.
 
 # Client
 
