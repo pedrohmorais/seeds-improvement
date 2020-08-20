@@ -1,18 +1,32 @@
 version: '3'
 services:
-  database:
+  postgres:
     image: "postgres" # use latest official postgres version
     env_file:
       - database.env # configure postgres
     volumes:
       - database-data:/var/lib/postgresql/data/ # persist data even if container shuts down
-    networks:
-      - postgres-compose-network
     ports:
     - "5432:5432"
+    container_name: postgres
+
+  app-server:
+    command: npm start
+    build: ./server
+    ports:
+    - "3000:3000"
+    links:
+    - postgres
+    depends_on:
+    - postgres
+    links:
+    - postgres
+
+  app-client:
+    command: npm run start-docker
+    build: ./client
+    ports:
+    - "4200:4200"
+
 volumes:
   database-data: # named volumes can be managed easier using docker-compose
-
-networks: 
-  postgres-compose-network:
-    driver: bridge

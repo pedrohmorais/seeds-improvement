@@ -3,9 +3,9 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start:server": "node src/server/index.js",
-    "start:client": "ng serve",
+    "start": "ng serve",
     "build": "ng build",
+    "start-docker": "ng serve --host 0.0.0.0",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
@@ -22,13 +22,6 @@
     "@angular/platform-browser": "~10.0.4",
     "@angular/platform-browser-dynamic": "~10.0.4",
     "@angular/router": "~10.0.4",
-    "@std/esm": "^0.26.0",
-    "body-parser": "^1.19.0",
-    "cors": "^2.8.5",
-    "dotenv": "^8.2.0",
-    "esm": "^3.2.25",
-    "express": "^4.17.1",
-    "pg": "^8.3.2",
     "rxjs": "~6.5.5",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.3"

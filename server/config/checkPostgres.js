@@ -9,7 +9,7 @@ import  { pgClient, pgTables } from './postgres';
 
 const tables = pgClient().tables
 
-const checkUsers = () => {
+const checkUsers = () => new Promise((resolve) => {
   const query = `select count(usename) from pg_user`;
   const client = pgClient();
   client.query(query, (err, res) => {
@@ -22,10 +22,11 @@ const checkUsers = () => {
       process.exit();
     }
     client.end();
+    resolve();
   });
-}
+});
 
-const checkSchema = () => {
+const checkSchema = () => new Promise((resolve) => {
   const query = `CREATE SCHEMA IF NOT EXISTS farmer`;
   const client = pgClient();
   client.query(query, (err, res) => {
@@ -34,10 +35,11 @@ const checkSchema = () => {
       process.exit();
     }
     client.end();
+    resolve();
   });
-}
+})
 
-const checkFarmers = () => {
+const checkFarmers = () => new Promise((resolve) => {
   const query = `CREATE TABLE IF NOT EXISTS ${pgTables.farmer} (
     id SERIAL PRIMARY KEY,
     name varchar
@@ -49,10 +51,11 @@ const checkFarmers = () => {
       process.exit();
     }
     client.end();
+    resolve();
   });
-}
+});
 
-const checkDocuments = () => {
+const checkDocuments = () => new Promise((resolve) => {
   const query = `CREATE TABLE IF NOT EXISTS farmer.documents (
     id SERIAL PRIMARY KEY,
     farmer_id integer REFERENCES farmers (id),
@@ -66,10 +69,11 @@ const checkDocuments = () => {
       process.exit();
     }
     client.end();
+    resolve();
   });
-}
+});
 
-const checkAddress = () => {
+const checkAddress = () => new Promise((resolve) => {
   const query = `CREATE TABLE IF NOT EXISTS farmer.address (
     id SERIAL PRIMARY KEY,
     farmer_id integer REFERENCES farmers (id),
@@ -86,7 +90,8 @@ const checkAddress = () => {
     }
     client.end();
   });
-}
+  resolve();
+})
 
 const seedFarmers = () => new Promise((resolve) => {
   const getQuery = `SELECT * FROM ${pgTables.farmer}`;
@@ -101,6 +106,7 @@ const seedFarmers = () => new Promise((resolve) => {
       process.exit();
     }
     if (res.rowCount >= 2) {
+      resolve();
       return;
     }
     const insertQuery = `INSERT INTO ${pgTables.farmer} (name) values 
@@ -117,7 +123,7 @@ const seedFarmers = () => new Promise((resolve) => {
   });
 })
 
-const seedDocuments = () => {
+const seedDocuments = () => new Promise((resolve) => {
   const getQuery = `SELECT * FROM farmer.documents`;
   const client = pgClient();
   client.query(getQuery, (err, res) => {
@@ -130,6 +136,7 @@ const seedDocuments = () => {
       process.exit();
     }
     if (res.rowCount >= 2) {
+      resolve();
       return;
     }
     const insertQuery = `INSERT INTO farmer.documents (
@@ -145,11 +152,12 @@ const seedDocuments = () => {
         process.exit();
       }
       client.end();
+      resolve();
     });
   });
-}
+});
 
-const seedAddress = () => {
+const seedAddress = () => new Promise((resolve) => {
   const getQuery = `SELECT * FROM farmer.address`;
   const client = pgClient();
   client.query(getQuery, (err, res) => {
@@ -162,6 +170,7 @@ const seedAddress = () => {
       process.exit();
     }
     if (res.rowCount >= 2) {
+      resolve();
       return;
     }
     const insertQuery = `INSERT INTO farmer.address (
@@ -191,27 +200,28 @@ const seedAddress = () => {
         process.exit();
       }
       client.end();
+      resolve();
     });
   });
-}
+});
 
 const seedTables = async () => {
   await seedFarmers();
-  seedDocuments();
-  seedAddress();
+  await seedDocuments();
+  await seedAddress();
 }
 
-const checkTables = () => {
-  checkFarmers();
-  checkDocuments();
-  checkAddress();
-}
+const checkTables = async () => {
+  await checkFarmers();
+  await checkDocuments();
+  await checkAddress();
+};
 
-const checkPostgres = () => {
-  checkUsers();
-  checkSchema();
-  checkTables();
-  seedTables();
+const checkPostgres = async () => {
+  await checkUsers();
+  await checkSchema();
+  await checkTables();
+  await seedTables();
 }
 
 export default checkPostgres;

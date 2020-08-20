@@ -1,10 +1,10 @@
 import { Component, OnInit, EventEmitter } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { debounceTime } from 'rxjs/operators';
-import { FarmersService } from 'src/client/app/core/services/farmers.service';
-import { Farmer } from 'src/client/app/core/model/Farmer';
-import { FarmerSearchAbstractProvider } from 'src/client/app/core/providers/farmer-search.abstract';
-import { SearchParams } from 'src/client/app/core/model/Farmer/search-params';
+import { FarmersService } from 'src/app/core/services/farmers.service';
+import { Farmer } from 'src/app/core/model/Farmer';
+import { FarmerSearchAbstractProvider } from 'src/app/core/providers/farmer-search.abstract';
+import { SearchParams } from 'src/app/core/model/Farmer/search-params';
 
 @Component({
   selector: 'farmer-farmers',

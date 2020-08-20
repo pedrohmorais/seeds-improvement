@@ -13,6 +13,9 @@ server.use(cors({ origin: 'http://localhost:4200' }));
 checkPostgres();
 
 server.use('/api', api);
+server.get("/health-check", (req, res, next) => {
+  res.send('Working');
+});
 
 server.listen(3000, () => {
   console.log('Server running on port 3000');

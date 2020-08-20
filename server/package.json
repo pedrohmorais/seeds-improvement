@@ -1,0 +1,25 @@
+{
+  "name": "seeds-improvement",
+  "version": "0.0.0",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "private": true,
+  "dependencies": {
+    "@babel/core": "^7.11.1",
+    "@babel/preset-env": "^7.11.0",
+    "@babel/register": "^7.10.5",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "esm": "^3.2.25",
+    "express": "^4.17.1",
+    "pg": "^8.3.2",
+    "rxjs": "~6.5.5",
+    "tslib": "^2.0.0"
+  },
+  "devDependencies": {
+    "tslint": "~6.1.0",
+    "typescript": "~3.9.5"
+  }
+}
