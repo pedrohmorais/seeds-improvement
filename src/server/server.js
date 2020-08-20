@@ -1,17 +1,19 @@
 
 import express from 'express';
-import * as api from './api';
+import cors from 'cors';
+import bodyParser from 'body-parser';
+import api from './api';
 import checkPostgres from './config/checkPostgres';
+
 const server = express();
 
-//const healthcheck = require('express-healthcheck')();
-//server.get('/health(check)?', healthcheck);
-
+server.use(bodyParser.json())
+server.use(cors({ origin: 'http://localhost:4200' }));
 
 checkPostgres();
 
 server.use('/api', api);
 
 server.listen(3000, () => {
- console.log('Server running on port 3000');
+  console.log('Server running on port 3000');
 });

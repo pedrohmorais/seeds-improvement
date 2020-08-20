@@ -1,9 +1,10 @@
 import  { pgClient, pgTables } from '../config/postgres';
+import { join } from 'path';
 
 class FarmersModel {
-  getFullFarmers() {
+  getFullFarmers(searchParams) {
     return new Promise((resolve, reject) => {
-      const query = `SELECT
+      const query = [`SELECT
           f.id,
           f.name,
           d.document_number,
@@ -16,10 +17,32 @@ class FarmersModel {
         inner join 
           ${pgTables.document} d on f.id = d.farmer_id
         inner join 
-          ${pgTables.address} a on f.id = a.farmer_id`;
+          ${pgTables.address} a on f.id = a.farmer_id`];
+
+      const where = [];
+
+      if (searchParams) {
+        if (searchParams.id) {
+          where.push({ agregation: 'or', condition: `d.document_number like '%${searchParams.id}%'` });
+        }
+        if (searchParams.name) {
+          where.push({ agregation: 'or', condition: `lower(f.name) like '%${searchParams.name}%'` });
+        }
+      }
+
+      let whereString = where.map((whereEl, i) => {
+        const { condition, agregation } = whereEl;
+        return i === 0 ? condition : `${agregation} ${condition}`;
+      }).join(' ');
+
+      if (whereString) {
+        whereString = `where ${whereString}`;
+      }
+      
+      query.push(whereString);
 
       const client = pgClient();
-      client.query(query, (err, res) => {
+      client.query(query.join(' '), (err, res) => {
         if (err) {
           reject(err);
         }
