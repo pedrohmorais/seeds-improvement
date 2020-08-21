@@ -24,6 +24,11 @@ To your docker compose images run `./scripts/clear-docker-compose.sh ` file or i
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 10.0.3.
 
+## Testing client
+
+Go to `./client` folder project with `cd client` command.
+Run `npm run test` to run client unit tests.
+
 ## Running unit tests
 
 In development...
